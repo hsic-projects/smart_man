@@ -444,368 +444,124 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-        // متغيرات المتجر
-        let currentView = 'grid';
-        let currentPage = 1;
-        const productsPerPage = 9;
-        let filteredProducts = [];
-        let currentFilters = {
+    <script src="script.js"></script>
+<script>
+    // متغيرات المتجر
+    let currentView = 'grid';
+    let currentPage = 1;
+    const productsPerPage = 9;
+    let filteredProducts = [];
+    let currentFilters = {
+        category: 'all',
+        priceRange: 'all',
+        sortBy: 'default',
+        searchTerm: ''
+    };
+
+    // تهيئة المتجر
+    document.addEventListener('DOMContentLoaded', function() {
+        initShop();
+    });
+
+    // تصفية المنتجات
+    function filterProducts() {
+        currentFilters.category = document.getElementById('category-filter').value;
+        currentPage = 1;
+        updateURL();
+        loadShopProducts();
+    }
+
+    // تصفية حسب السعر
+    function filterByPrice() {
+        currentFilters.priceRange = document.getElementById('price-range').value;
+        currentPage = 1;
+        updateURL();
+        loadShopProducts();
+    }
+
+    // ترتيب المنتجات
+    function sortProducts() {
+        currentFilters.sortBy = document.getElementById('sort-by').value;
+        currentPage = 1;
+        updateURL();
+        loadShopProducts();
+    }
+
+    // تغيير طريقة العرض
+    function changeView(view) {
+        currentView = view;
+        const container = document.getElementById('products-container');
+        const viewBtns = document.querySelectorAll('.view-btn');
+        
+        viewBtns.forEach(btn => btn.classList.remove('active'));
+        event.target.closest('.view-btn').classList.add('active');
+        
+        if (container) {
+            container.className = `products-${view} ${view}-view`;
+        }
+        loadShopProducts();
+    }
+
+    // إعادة تعيين الفلاتر
+    function resetFilters() {
+        document.getElementById('category-filter').value = 'all';
+        document.getElementById('price-range').value = 'all';
+        document.getElementById('sort-by').value = 'default';
+        document.getElementById('search-input').value = '';
+        
+        currentFilters = {
             category: 'all',
             priceRange: 'all',
             sortBy: 'default',
             searchTerm: ''
         };
+        
+        currentPage = 1;
+        updateURL();
+        loadShopProducts();
+    }
 
-        // تهيئة المتجر
-        document.addEventListener('DOMContentLoaded', function() {
-            loadShopProducts();
-            setupShopEventListeners();
-            applyURLFilters();
-        });
+    // البحث في المتجر
+    function searchProducts() {
+        const searchInput = document.getElementById('search-input');
+        currentFilters.searchTerm = searchInput.value;
+        currentPage = 1;
+        updateURL();
+        loadShopProducts();
+    }
 
-        // تحميل منتجات المتجر
-        function loadShopProducts() {
-            const container = document.getElementById('products-container');
-            const resultsInfo = document.getElementById('results-info');
-            const noProducts = document.getElementById('no-products');
-            
-            // تطبيق الفلاتر
-            applyFilters();
-            
-            // حساب عدد الصفحات
-            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-            
-            // عرض المنتجات للصفحة الحالية
-            const startIndex = (currentPage - 1) * productsPerPage;
-            const endIndex = startIndex + productsPerPage;
-            const currentProducts = filteredProducts.slice(startIndex, endIndex);
-            
-            if (currentProducts.length === 0) {
-                container.style.display = 'none';
-                noProducts.style.display = 'block';
-                resultsInfo.textContent = 'لم نعثر على منتجات';
-            } else {
-                container.style.display = currentView === 'grid' ? 'grid' : 'block';
-                noProducts.style.display = 'none';
-                container.className = `products-${currentView} ${currentView}-view`;
-                
-                container.innerHTML = currentProducts.map(product => `
-                    <div class="product-card" data-id="${product.id}">
-                        <div class="product-image">
-                            ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-                            <img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'">
-                            <span>${product.name}</span>
-                        </div>
-                        <div class="product-card-content">
-                            <h3>${product.name}</h3>
-                            <p class="category">${getCategoryName(product.category)}</p>
-                            <p class="price">
-                                ${product.price} ج.م
-                                ${product.originalPrice ? `<span class="original-price">${product.originalPrice} ج.م</span>` : ''}
-                            </p>
-                            <div class="product-actions">
-                                <button class="add-to-cart" onclick="addToCart(${product.id})">
-                                    أضف إلى السلة
-                                </button>
-                                <button class="quick-view-btn" onclick="openQuickView(${product.id})">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="wishlist-btn" onclick="toggleWishlist(${product.id})">
-                                    <i class="far fa-heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-                
-                // تحديث معلومات النتائج
-                const totalResults = filteredProducts.length;
-                const showingStart = startIndex + 1;
-                const showingEnd = Math.min(endIndex, totalResults);
-                resultsInfo.textContent = `عرض ${showingStart}-${showingEnd} من ${totalResults} منتج`;
-            }
-            
-            // تحديث الترقيم
-            updatePagination(totalPages);
+    // تطبيق فلاتر من الرابط
+    function applyURLFilters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        if (urlParams.has('category')) {
+            const category = urlParams.get('category');
+            document.getElementById('category-filter').value = category;
+            currentFilters.category = category;
         }
-
-        // تطبيق الفلاتر
-        function applyFilters() {
-            let results = [...products];
-            
-            // تصفية حسب التصنيف
-            if (currentFilters.category !== 'all') {
-                results = results.filter(product => product.category === currentFilters.category);
-            }
-            
-            // تصفية حسب نطاق السعر
-            if (currentFilters.priceRange !== 'all') {
-                results = results.filter(product => {
-                    const price = product.price;
-                    switch(currentFilters.priceRange) {
-                        case '0-1000': return price <= 1000;
-                        case '1000-2000': return price > 1000 && price <= 2000;
-                        case '2000-3000': return price > 2000 && price <= 3000;
-                        case '3000+': return price > 3000;
-                        default: return true;
-                    }
-                });
-            }
-            
-            // تصفية حسب البحث
-            if (currentFilters.searchTerm) {
-                const searchTerm = currentFilters.searchTerm.toLowerCase();
-                results = results.filter(product => 
-                    product.name.toLowerCase().includes(searchTerm) ||
-                    getCategoryName(product.category).toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            // الترتيب
-            switch(currentFilters.sortBy) {
-                case 'price-low':
-                    results.sort((a, b) => a.price - b.price);
-                    break;
-                case 'price-high':
-                    results.sort((a, b) => b.price - a.price);
-                    break;
-                case 'name':
-                    results.sort((a, b) => a.name.localeCompare(b.name, 'ar'));
-                    break;
-                default:
-                    // الترتيب الافتراضي
-                    break;
-            }
-            
-            filteredProducts = results;
+        
+        if (urlParams.has('search')) {
+            const search = urlParams.get('search');
+            document.getElementById('search-input').value = search;
+            currentFilters.searchTerm = search;
         }
+    }
 
-        // تصفية المنتجات
-        function filterProducts() {
-            currentFilters.category = document.getElementById('category-filter').value;
-            currentPage = 1;
-            updateURL();
-            loadShopProducts();
+    // تحديث الرابط
+    function updateURL() {
+        const params = new URLSearchParams();
+        
+        if (currentFilters.category !== 'all') {
+            params.set('category', currentFilters.category);
         }
-
-        // تصفية حسب السعر
-        function filterByPrice() {
-            currentFilters.priceRange = document.getElementById('price-range').value;
-            currentPage = 1;
-            updateURL();
-            loadShopProducts();
+        
+        if (currentFilters.searchTerm) {
+            params.set('search', currentFilters.searchTerm);
         }
-
-        // ترتيب المنتجات
-        function sortProducts() {
-            currentFilters.sortBy = document.getElementById('sort-by').value;
-            currentPage = 1;
-            updateURL();
-            loadShopProducts();
-        }
-
-        // تغيير طريقة العرض
-        function changeView(view) {
-            currentView = view;
-            const container = document.getElementById('products-container');
-            const viewBtns = document.querySelectorAll('.view-btn');
-            
-            viewBtns.forEach(btn => btn.classList.remove('active'));
-            event.target.closest('.view-btn').classList.add('active');
-            
-            container.className = `products-${view} ${view}-view`;
-            loadShopProducts();
-        }
-
-        // تحديث الترقيم
-        function updatePagination(totalPages) {
-            const pagination = document.getElementById('pagination');
-            
-            if (totalPages <= 1) {
-                pagination.innerHTML = '';
-                return;
-            }
-            
-            let paginationHTML = '';
-            
-            // زر السابق
-            if (currentPage > 1) {
-                paginationHTML += `<button class="page-btn" onclick="goToPage(${currentPage - 1})">السابق</button>`;
-            }
-            
-            // أرقام الصفحات
-            for (let i = 1; i <= totalPages; i++) {
-                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-                    paginationHTML += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-                } else if (i === currentPage - 2 || i === currentPage + 2) {
-                    paginationHTML += `<span class="page-btn">...</span>`;
-                }
-            }
-            
-            // زر التالي
-            if (currentPage < totalPages) {
-                paginationHTML += `<button class="page-btn" onclick="goToPage(${currentPage + 1})">التالي</button>`;
-            }
-            
-            pagination.innerHTML = paginationHTML;
-        }
-
-        // الانتقال إلى صفحة
-        function goToPage(page) {
-            currentPage = page;
-            loadShopProducts();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // إعادة تعيين الفلاتر
-        function resetFilters() {
-            document.getElementById('category-filter').value = 'all';
-            document.getElementById('price-range').value = 'all';
-            document.getElementById('sort-by').value = 'default';
-            document.getElementById('search-input').value = '';
-            
-            currentFilters = {
-                category: 'all',
-                priceRange: 'all',
-                sortBy: 'default',
-                searchTerm: ''
-            };
-            
-            currentPage = 1;
-            updateURL();
-            loadShopProducts();
-        }
-
-        // البحث في المتجر
-        function searchProducts() {
-            const searchInput = document.getElementById('search-input');
-            currentFilters.searchTerm = searchInput.value;
-            currentPage = 1;
-            updateURL();
-            loadShopProducts();
-        }
-
-        // فتح العرض السريع
-        function openQuickView(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            
-            const modal = document.getElementById('quick-view-modal');
-            const content = document.getElementById('quick-view-content');
-            
-            content.innerHTML = `
-                <div style="display: flex; gap: 2rem; padding: 2rem;">
-                    <div style="flex: 1;">
-                        <div style="width: 100%; height: 400px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                            <img src="${product.image}" alt="${product.name}" style="max-width: 100%; max-height: 100%; border-radius: 10px;" onerror="this.style.display='none'">
-                            <span>${product.name}</span>
-                        </div>
-                    </div>
-                    <div style="flex: 1; padding: 1rem;">
-                        <h2 style="margin-bottom: 1rem; color: var(--primary-color);">${product.name}</h2>
-                        <p class="category" style="color: #666; margin-bottom: 1rem;">${getCategoryName(product.category)}</p>
-                        <p class="price" style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color); margin-bottom: 1.5rem;">
-                            ${product.price} ج.م
-                            ${product.originalPrice ? `<span class="original-price" style="font-size: 1.2rem;">${product.originalPrice} ج.م</span>` : ''}
-                        </p>
-                        <p style="line-height: 1.6; margin-bottom: 2rem; color: #555;">
-                            ${product.description || 'بدلة رجالية أنيقة وعصرية تناسب المناسبات المختلفة. مصنوعة من أجود أنواع الأقمشة مع خياطة دقيقة تضمن الراحة والأناقة.'}
-                        </p>
-                        <div style="margin-bottom: 2rem;">
-                            <h4 style="margin-bottom: 1rem;">المقاسات المتاحة:</h4>
-                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                <button class="size-btn" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">S</button>
-                                <button class="size-btn" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">M</button>
-                                <button class="size-btn active" style="padding: 0.5rem 1rem; border: 1px solid var(--secondary-color); border-radius: 5px; background: var(--secondary-color); color: white; cursor: pointer;">L</button>
-                                <button class="size-btn" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">XL</button>
-                                <button class="size-btn" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">XXL</button>
-                            </div>
-                        </div>
-                        <button class="add-to-cart" onclick="addToCart(${product.id}); closeQuickView();" style="width: 100%; padding: 15px; font-size: 1.1rem;">
-                            أضف إلى السلة
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            modal.style.display = 'flex';
-        }
-
-        // إغلاق العرض السريع
-        function closeQuickView() {
-            document.getElementById('quick-view-modal').style.display = 'none';
-        }
-
-        // إضافة إلى المفضلة
-        function toggleWishlist(productId) {
-            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-            const index = wishlist.indexOf(productId);
-            
-            if (index > -1) {
-                wishlist.splice(index, 1);
-                showNotification('تم إزالة المنتج من المفضلة');
-            } else {
-                wishlist.push(productId);
-                showNotification('تم إضافة المنتج إلى المفضلة');
-            }
-            
-            localStorage.setItem('wishlist', JSON.stringify(wishlist));
-        }
-
-        // تطبيق فلاتر من الرابط
-        function applyURLFilters() {
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            if (urlParams.has('category')) {
-                const category = urlParams.get('category');
-                document.getElementById('category-filter').value = category;
-                currentFilters.category = category;
-            }
-            
-            if (urlParams.has('search')) {
-                const search = urlParams.get('search');
-                document.getElementById('search-input').value = search;
-                currentFilters.searchTerm = search;
-            }
-            
-            if (urlParams.has('offer')) {
-                // معالجة العروض الخاصة
-            }
-        }
-
-        // تحديث الرابط
-        function updateURL() {
-            const params = new URLSearchParams();
-            
-            if (currentFilters.category !== 'all') {
-                params.set('category', currentFilters.category);
-            }
-            
-            if (currentFilters.searchTerm) {
-                params.set('search', currentFilters.searchTerm);
-            }
-            
-            const newURL = params.toString() ? `shop.html?${params.toString()}` : 'shop.html';
-            window.history.replaceState({}, '', newURL);
-        }
-
-        // إعداد مستمعي الأحداث للمتجر
-        function setupShopEventListeners() {
-            // إغلاق العرض السريع عند النقر خارج المحتوى
-            document.getElementById('quick-view-modal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeQuickView();
-                }
-            });
-            
-            // البحث عند الضغط على Enter
-            document.getElementById('search-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    searchProducts();
-                }
-            });
-        }
+        
+        const newURL = params.toString() ? `shop.html?${params.toString()}` : 'shop.html';
+        window.history.replaceState({}, '', newURL);
+    }
     </script>
 </body>
 </html>
