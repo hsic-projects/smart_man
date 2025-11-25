@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المتجر - سمارت مان</title>
+    <meta name="description" content="متجر سمارت مان - اكتشف أحدث تشكيلة البدلات الرجالية">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .shop-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .shop-controls {
+            background: var(--white);
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            background: var(--white);
+            color: var(--text-color);
+            outline: none;
+        }
+
+        .view-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active {
+            background: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .results-info {
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--white);
+            color: var(--text-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn.active {
+            background: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .page-btn:hover:not(.active) {
+            background: var(--light-bg);
+        }
+
+        .no-products {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #666;
+        }
+
+        .no-products i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        .quick-view-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quick-view-content {
+            background: white;
+            border-radius: 15px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .quick-view-close {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--secondary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .quick-view-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .quick-view-btn:hover {
+            background: #34495e;
+        }
+
+        .wishlist-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .wishlist-btn:hover {
+            background: var(--light-bg);
+        }
+
+        /* تخطيط الشبكة والقائمة */
+        .products-grid.grid-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .products-list.list-view {
+            display: block;
+        }
+
+        .products-list.list-view .product-card {
+            display: flex;
+            text-align: right;
+            margin-bottom: 2rem;
+        }
+
+        .products-list.list-view .product-image {
+            width: 200px;
+            height: 200px;
+            flex-shrink: 0;
+        }
+
+        .products-list.list-view .product-card-content {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .products-list.list-view .product-actions {
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .products-list.list-view .product-card {
+                flex-direction: column;
+            }
+            
+            .products-list.list-view .product-image {
+                width: 100%;
+                height: 250px;
+            }
+            
+            .controls-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-section {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">سمارت مان</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="shop.html" class="active">المتجر</a></li>
+                <li><a href="about.html">من نحن</a></li>
+                <li><a href="contact.html">اتصل بنا</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="search-bar">
+                    <input type="text" placeholder="ابحث عن منتج..." id="search-input">
+                    <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="nav-icons">
+                    <a href="#" class="nav-icon" id="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a>
+                    <a href="#" class="nav-icon">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- رأس المتجر -->
+    <section class="shop-header">
+        <div class="container">
+            <h1>متجر سمارت مان</h1>
+            <p>اكتشف تشكيلتنا الواسعة من البدلات الرجالية</p>
+        </div>
+    </section>
+
+    <!-- عناصر التحكم -->
+    <section class="shop-controls">
+        <div class="container">
+            <div class="controls-container">
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label for="category-filter">التصنيف:</label>
+                        <select id="category-filter" class="filter-select" onchange="filterProducts()">
+                            <option value="all">جميع التصنيفات</option>
+                            <option value="business">بدلات عمل</option>
+                            <option value="wedding">بدلات أفراح</option>
+                            <option value="casual">بدلات كاجوال</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sort-by">ترتيب حسب:</label>
+                        <select id="sort-by" class="filter-select" onchange="sortProducts()">
+                            <option value="default">الإفتراضي</option>
+                            <option value="price-low">السعر: من الأقل للأعلى</option>
+                            <option value="price-high">السعر: من الأعلى للأقل</option>
+                            <option value="name">الاسم</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="price-range">نطاق السعر:</label>
+                        <select id="price-range" class="filter-select" onchange="filterByPrice()">
+                            <option value="all">جميع الأسعار</option>
+                            <option value="0-1000">حتى 1000 ج.م</option>
+                            <option value="1000-2000">1000 - 2000 ج.م</option>
+                            <option value="2000-3000">2000 - 3000 ج.م</option>
+                            <option value="3000+">أكثر من 3000 ج.م</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="view-options">
+                    <button class="view-btn active" onclick="changeView('grid')">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" onclick="changeView('list')">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- المنتجات -->
+    <section class="products">
+        <div class="container">
+            <div class="results-info" id="results-info">
+                جاري تحميل المنتجات...
+            </div>
+            <div class="products-grid grid-view" id="products-container">
+                <!-- سيتم ملؤه بالمنتجات -->
+            </div>
+            
+            <!-- حالة عدم وجود منتجات -->
+            <div class="no-products" id="no-products" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>لم نعثر على منتجات</h3>
+                <p>جرب تغيير عوامل التصفية أو مصطلحات البحث</p>
+                <button class="cta-button secondary" onclick="resetFilters()">إعادة تعيين الفلاتر</button>
+            </div>
+
+            <!-- الترقيم -->
+            <div class="pagination" id="pagination">
+                <!-- سيتم ملؤه ديناميكياً -->
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>سمارت مان</h3>
+                    <p>وجهتك الأولى للبدلات الرجالية العصرية والأنيقة. نقدم أفضل التصميمات بأعلى جودة وأسعار تنافسية.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/" target="_blank">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="https://wa.me/201234567890" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="shop.html">المتجر</a></li>
+                        <li><a href="about.html">من نحن</a></li>
+                        <li><a href="contact.html">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>خدمة العملاء</h4>
+                    <ul>
+                        <li><a href="#">الشحن والتوصيل</a></li>
+                        <li><a href="#">سياسة الإرجاع</a></li>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                        <li><a href="#">دليل المقاسات</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>معلومات الاتصال</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</p>
+                    <p><i class="fas fa-phone"></i> 01234567890</p>
+                    <p><i class="fas fa-envelope"></i> info@smartman.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 سمارت مان. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- سلة التسوق -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>سلة التسوق</h3>
+            <button class="close-cart" onclick="closeCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- سيتم ملؤه بالمنتجات -->
+        </div>
+        <div class="cart-total">
+            <p>المجموع: <span id="cart-total-price">0</span> ج.م</p>
+            <button class="checkout-btn" onclick="checkout()">إتمام الشراء</button>
+        </div>
+    </div>
+
+    <!-- نافذة العرض السريع -->
+    <div class="quick-view-modal" id="quick-view-modal">
+        <button class="quick-view-close" onclick="closeQuickView()">&times;</button>
+        <div class="quick-view-content" id="quick-view-content">
+            <!-- سيتم ملؤه ديناميكياً -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // متغيرات المتجر
+        let currentView = 'grid';
+        let currentPage = 1;
+        const productsPerPage = 9;
+        let filteredProducts = [];
+        let currentFilters = {
+            category: 'all',
+            priceRange: 'all',
+            sortBy: 'default',
+            searchTerm: ''
+        };
+
+        // تهيئة المتجر
+        document.addEventListener('DOMContentLoaded', function() {
+            loadShopProducts();
+            setupShopEventListeners();
+            applyURLFilters();
+        });
+
+        // تحميل منتجات المتجر
+        function loadShopProducts() {
+            const container = document.getElementById('products-container');
+            const resultsInfo = document.getElementById('results-info');
+            const noProducts = document.getElementById('no-products');
+            
+            // تطبيق الفلاتر
+            applyFilters();
+            
+            // حساب عدد الصفحات
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            
+            // عرض المنتجات للصفحة الحالية
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const currentProducts = filteredProducts.slice(startIndex, endIndex);
+            
+            if (currentProducts.length === 0) {
+                container.style.display = 'none';
+                noProducts.style.display = 'block';
+                resultsInfo.textContent = 'لم نعثر على منتجات';
+            } else {
+                container.style.display = currentView === 'grid' ? 'grid' : 'block';
+                noProducts.style.display = 'none';
+                container.className = `products-${currentView} ${currentView}-view`;
+                
+                container.innerHTML = currentProducts.map(product => `
+                    <div class="product-card" data-id="${product.id}">
+                        <div class="product-image">
+                            ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                            <img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'">
+                            <span>${product.name}</span>
+                        </div>
+                        <div class="product-card-content">
+                            <h3>${product.name}</h3>
+                            <p class="category">${getCategoryName(product.category)}</p>
+                            <p class="price">
+                                ${product.price} ج.م
+                                ${product.originalPrice ? `<span class="original-price">${product.originalPrice} ج.م</span>` : ''}
+                            </p>
+                            <div class="product-actions">
+                                <button class="add-to-cart" onclick="addToCart(${product.id})">
+                                    أضف إلى السلة
+                                </button>
+                                <button class="quick-view-btn" onclick="openQuickView(${product.id})">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="wishlist-btn" onclick="toggleWishlist(${product.id})">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // تحديث معلومات النتائج
+                const totalResults = filteredProducts.length;
+                const showingStart = startIndex + 1;
+                const showingEnd = Math.min(endIndex, totalResults);
+                resultsInfo.textContent = `عرض ${showingStart}-${showingEnd} من ${totalResults} منتج`;
+            }
+            
+            // تحديث الترقيم
+            updatePagination(totalPages);
+        }
+
+        // تطبيق الفلاتر
+        function applyFilters() {
+            let results = [...products];
+            
+            // تصفية حسب التصنيف
+            if (currentFilters.category !== 'all') {
+                results = results.filter(product => product.category === currentFilters.category);
+            }
+            
+            // تصفية حسب نطاق السعر
+            if (currentFilters.priceRange !== 'all') {
+                results = results.filter(product => {
+                    const price = product.price;
+                    switch(currentFilters.priceRange) {
+                        case '0-1000': return price <= 1000;
+                        case '1000-2000': return price > 1000 && price <= 2000;
+                        case '2000-3000': return price > 2000 && price <= 3000;
+                        case '3000+': return price > 3000;
+                        default: return true;
+                    }
+                });
+            }
+            
+            // تصفية حسب البحث
+            if (currentFilters.searchTerm) {
+                const searchTerm = currentFilters.searchTerm.toLowerCase();
+                results = results.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    getCategoryName(product.category).toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // الترتيب
+            switch(currentFilters.sortBy) {
+                case 'price-low':
+                    results.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    results.sort((a, b) => b.price - a.price);
+                    break;
+                case 'name':
+                    results.sort((a, b) => a.name.localeCompare(b.name, 'ar'));
+                    break;
+                default:
+                    // الترتيب الافتراضي
+                    break;
+            }
+            
+            filteredProducts = results;
+        }
+
+        // تصفية المنتجات
+        function filterProducts() {
+            currentFilters.category = document.getElementById('category-filter').value;
+            currentPage = 1;
+            updateURL();
+            loadShopProducts();
+        }
+
+        // تصفية حسب السعر
+        function filterByPrice() {
+            currentFilters.priceRange = document.getElementById('price-range').value;
+            currentPage = 1;
+            updateURL();
+            loadShopProducts();
+        }
+
+        // ترتيب المنتجات
+        function sortProducts() {
+            currentFilters.sortBy = document.getElementById('sort-by').value;
+            currentPage = 1;
+            updateURL();
+            loadShopProducts();
+        }
+
+        // تغيير طريقة العرض
+        function changeView(view) {
+            currentView = view;
+            const container = document.getElementById('products-container');
+            const viewBtns = document.querySelectorAll('.view-btn');
+            
+            viewBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.view-btn').classList.add('active');
+            
+            container.className = `products-${view} ${view}-view`;
+            loadShopProducts();
+        }
+
+        // تحديث الترقيم
+        function updatePagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // زر السابق
+            if (currentPage > 1) {
+                paginationHTML += `<button class="page-btn" onclick="goToPage(${currentPage - 1})">السابق</button>`;
+            }
+            
+            // أرقام الصفحات
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    paginationHTML += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    paginationHTML += `<span class="page-btn">...</span>`;
+                }
+            }
+            
+            // زر التالي
+            if (currentPage < totalPages) {
+                paginationHTML += `<button class="page-btn" onclick="goToPage(${currentPage + 1})">التالي</button>`;
+            }
+            
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // الانتقال إلى صفحة
+        function goToPage(page) {
+            currentPage = page;
+            loadShopProducts();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // إعادة تعيين الفلاتر
+        function resetFilters() {
+            document.getElementById('category-filter').value = 'all';
+            document.getElementById('price-range').value = 'all';
+            document.getElementById('sort-by').value = 'default';
+            document.getElementById('search-input').value = '';
+            
+            currentFilters = {
+                category: 'all',
+                priceRange: 'all',
+                sortBy: 'default',
+                searchTerm: ''
+            };
+            
+            currentPage = 1;
+            updateURL();
+            loadShopProducts();
+        }
+
+        // البحث في المتجر
+        function searchProducts() {
+            const searchInput = document.getElementById('search-input');
+            currentFilters.searchTerm = searchInput.value;
+            currentPage = 1;
+            updateURL();
+            loadShopProducts();
+        }
+
+        // فتح العرض السريع
+        function openQuickView(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const modal = document.getElementById('quick-view-modal');
+            const content = document.getElementById('quick-view-content');
+            
+            content.innerHTML = `
+                <div style="display: flex; gap: 2rem; padding: 2rem;">
+                    <div style="flex: 1;">
+                        <div style="width: 100%; height: 400px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <img src="${product.image}" alt="${product.name}" style="max-width: 100%; max-height: 100%; border-radius: 10px;" onerror="this.style.display='none'">
+                            <span>${product.name}</span>
+                        </div>
+                    </div>
+                    <div style="flex: 1; padding: 1rem;">
+                        <h2 style="margin-bottom: 1rem; color: var(--primary-color);">${product.name}</h2>
+                        <p class="category" style="color: #666; margin-bottom: 1rem;">${getCategoryName(product.category)}</p>
+                        <p class="price" style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color); margin-bottom: 1.5rem;">
+                            ${product.price} ج.م
+                            ${product.originalPrice ? `<span class="original-price" style="font-size: 1.2rem;">${product.originalPrice} ج.م</span>` : ''}
+                        </p>
+                        <p style="line-height: 1.6; margin-bottom: 2rem; color: #555;">
+                            ${product.description || 'بدلة رجالية أنيقة وعصرية تناسب المناسبات المختلفة. مصنوعة من أجود أنواع الأقمشة مع خياطة دقيقة تضمن الراحة والأناقة.'}
+                        </p>
+                        <div style="margin-bottom: 2rem;">
+                            <h4 style="margin-bottom: 1rem;">المقاسات المتاحة:</h4>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <button class="size-btn" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">S</button>
+                                <button class="size-btn" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">M</button>
+                                <button class="size-btn active" style="padding: 0.5rem 1rem; border: 1px solid var(--secondary-color); border-radius: 5px; background: var(--secondary-color); color: white; cursor: pointer;">L</button>
+                                <button class="size-btn" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">XL</button>
+                                <button class="size-btn" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">XXL</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart" onclick="addToCart(${product.id}); closeQuickView();" style="width: 100%; padding: 15px; font-size: 1.1rem;">
+                            أضف إلى السلة
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+
+        // إغلاق العرض السريع
+        function closeQuickView() {
+            document.getElementById('quick-view-modal').style.display = 'none';
+        }
+
+        // إضافة إلى المفضلة
+        function toggleWishlist(productId) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const index = wishlist.indexOf(productId);
+            
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showNotification('تم إزالة المنتج من المفضلة');
+            } else {
+                wishlist.push(productId);
+                showNotification('تم إضافة المنتج إلى المفضلة');
+            }
+            
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        }
+
+        // تطبيق فلاتر من الرابط
+        function applyURLFilters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.has('category')) {
+                const category = urlParams.get('category');
+                document.getElementById('category-filter').value = category;
+                currentFilters.category = category;
+            }
+            
+            if (urlParams.has('search')) {
+                const search = urlParams.get('search');
+                document.getElementById('search-input').value = search;
+                currentFilters.searchTerm = search;
+            }
+            
+            if (urlParams.has('offer')) {
+                // معالجة العروض الخاصة
+            }
+        }
+
+        // تحديث الرابط
+        function updateURL() {
+            const params = new URLSearchParams();
+            
+            if (currentFilters.category !== 'all') {
+                params.set('category', currentFilters.category);
+            }
+            
+            if (currentFilters.searchTerm) {
+                params.set('search', currentFilters.searchTerm);
+            }
+            
+            const newURL = params.toString() ? `shop.html?${params.toString()}` : 'shop.html';
+            window.history.replaceState({}, '', newURL);
+        }
+
+        // إعداد مستمعي الأحداث للمتجر
+        function setupShopEventListeners() {
+            // إغلاق العرض السريع عند النقر خارج المحتوى
+            document.getElementById('quick-view-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeQuickView();
+                }
+            });
+            
+            // البحث عند الضغط على Enter
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchProducts();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

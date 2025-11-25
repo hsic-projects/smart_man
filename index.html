@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سمارت مان - بدلات رجالية أنيقة</title>
+    <meta name="description" content="سمارت مان - أفضل بدلات رجالية عصرية وأنيقة بجودة عالية وأسعار مناسبة">
+    <meta name="keywords" content="بدلات رجالية, أزياء رجالية, بدلات عمل, بدلات سهرة">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">سمارت مان</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">الرئيسية</a></li>
+                <li><a href="shop.html">المتجر</a></li>
+                <li><a href="about.html">من نحن</a></li>
+                <li><a href="contact.html">اتصل بنا</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="search-bar">
+                    <input type="text" placeholder="ابحث عن منتج..." id="search-input">
+                    <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="nav-icons">
+                    <a href="#" class="nav-icon" id="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a>
+                    <a href="#" class="nav-icon">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- قسم الهيرو -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>سمارت مان</h1>
+            <p>أناقة لا تنتهي مع أفضل البدلات الرجالية</p>
+            <p class="hero-subtitle">جودة عالية - تصميمات عصرية - أسعار مناسبة</p>
+            <a href="shop.html" class="cta-button">اكتشف المجموعة</a>
+        </div>
+    </section>
+
+    <!-- قسم المميزات -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>جودة عالية</h3>
+                    <p>أقمشة ممتازة وخياطة دقيقة</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-truck"></i>
+                    <h3>شحن سريع</h3>
+                    <p>توصيل سريع لجميع المحافظات</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-undo"></i>
+                    <h3>إرجاع سهل</h3>
+                    <p>إمكانية الإرجاع خلال 7 أيام</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>دعم فني</h3>
+                    <p>دعم على مدار الساعة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم المنتجات -->
+    <section class="products">
+        <div class="container">
+            <h2 class="section-title">أفضل المنتجات</h2>
+            <div class="products-grid" id="featured-products">
+                <!-- سيتم ملؤه بالمنتجات المميزة -->
+            </div>
+            <div class="text-center">
+                <a href="shop.html" class="cta-button secondary">عرض جميع المنتجات</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم التصنيفات -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">تصفح حسب التصنيف</h2>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <img src="images/business-suits.jpg" alt="بدلات عمل">
+                    <div class="category-content">
+                        <h3>بدلات عمل</h3>
+                        <a href="shop.html?category=business" class="category-btn">عرض المنتجات</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <img src="images/wedding-suits.jpg" alt="بدلات أفراح">
+                    <div class="category-content">
+                        <h3>بدلات أفراح</h3>
+                        <a href="shop.html?category=wedding" class="category-btn">عرض المنتجات</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <img src="images/casual-suits.jpg" alt="بدلات كاجوال">
+                    <div class="category-content">
+                        <h3>بدلات كاجوال</h3>
+                        <a href="shop.html?category=casual" class="category-btn">عرض المنتجات</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم العروض -->
+    <section class="offers">
+        <div class="container">
+            <div class="offer-banner">
+                <h2>عروض خاصة</h2>
+                <p>خصم يصل إلى 30% على مجموعة البدلات الصيفية</p>
+                <a href="shop.html?offer=summer" class="cta-button">استفد بالعرض</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>سمارت مان</h3>
+                    <p>وجهتك الأولى للبدلات الرجالية العصرية والأنيقة. نقدم أفضل التصميمات بأعلى جودة وأسعار تنافسية.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/" target="_blank">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="https://wa.me/201234567890" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="shop.html">المتجر</a></li>
+                        <li><a href="about.html">من نحن</a></li>
+                        <li><a href="contact.html">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>خدمة العملاء</h4>
+                    <ul>
+                        <li><a href="#">الشحن والتوصيل</a></li>
+                        <li><a href="#">سياسة الإرجاع</a></li>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                        <li><a href="#">دليل المقاسات</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>معلومات الاتصال</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</p>
+                    <p><i class="fas fa-phone"></i> 01234567890</p>
+                    <p><i class="fas fa-envelope"></i> info@smartman.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 سمارت مان. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- سلة التسوق -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>سلة التسوق</h3>
+            <button class="close-cart" onclick="closeCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- سيتم ملؤه بالمنتجات -->
+        </div>
+        <div class="cart-total">
+            <p>المجموع: <span id="cart-total-price">0</span> ج.م</p>
+            <button class="checkout-btn" onclick="checkout()">إتمام الشراء</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
