@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,7 +77,7 @@
             background: white;
             padding: 3rem;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .form-group {
@@ -90,7 +91,9 @@
             font-weight: 500;
         }
 
-        .form-input, .form-textarea, .form-select {
+        .form-input,
+        .form-textarea,
+        .form-select {
             width: 100%;
             padding: 1rem;
             border: 1px solid var(--border-color);
@@ -100,7 +103,9 @@
             background: var(--white);
         }
 
-        .form-input:focus, .form-textarea:focus, .form-select:focus {
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
             outline: none;
             border-color: var(--secondary-color);
         }
@@ -172,7 +177,7 @@
             background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .faq-question {
@@ -201,7 +206,7 @@
             background: white;
             padding: 2rem;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             margin-top: 2rem;
         }
 
@@ -229,15 +234,16 @@
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
-            
-            .contact-info, .contact-form {
+
+            .contact-info,
+            .contact-form {
                 padding: 2rem;
             }
-            
+
             .form-row {
                 grid-template-columns: 1fr;
             }
-            
+
             .map-container {
                 height: 300px;
             }
@@ -262,6 +268,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- شريط التنقل -->
     <nav class="navbar">
@@ -308,7 +315,7 @@
                 <!-- معلومات الاتصال -->
                 <div class="contact-info">
                     <h2 style="color: var(--primary-color); margin-bottom: 2rem;">معلومات التواصل</h2>
-                    
+
                     <div class="contact-item">
                         <div class="contact-icon">
                             <i class="fas fa-map-marker-alt"></i>
@@ -318,7 +325,7 @@
                             <p>123 شارع التحرير، Downtown<br>القاهرة، مصر</p>
                         </div>
                     </div>
-                    
+
                     <div class="contact-item">
                         <div class="contact-icon">
                             <i class="fas fa-phone"></i>
@@ -328,7 +335,7 @@
                             <p>+20 123 456 7890<br>+20 098 765 4321</p>
                         </div>
                     </div>
-                    
+
                     <div class="contact-item">
                         <div class="contact-icon">
                             <i class="fas fa-envelope"></i>
@@ -338,7 +345,7 @@
                             <p>info@smartman.com<br>support@smartman.com</p>
                         </div>
                     </div>
-                    
+
                     <div class="contact-item">
                         <div class="contact-icon">
                             <i class="fas fa-clock"></i>
@@ -372,15 +379,15 @@
                 <!-- نموذج الاتصال -->
                 <div class="contact-form">
                     <h2 style="color: var(--primary-color); margin-bottom: 2rem;">أرسل رسالة</h2>
-                    
+
                     <div class="success-message" id="success-message">
                         <i class="fas fa-check-circle"></i> تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.
                     </div>
-                    
+
                     <div class="error-message" id="error-message">
                         <i class="fas fa-exclamation-circle"></i> حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.
                     </div>
-                    
+
                     <form id="contact-form">
                         <div class="form-row">
                             <div class="form-group">
@@ -392,12 +399,12 @@
                                 <input type="tel" id="phone" class="form-input" required>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label class="form-label" for="email">البريد الإلكتروني *</label>
                             <input type="email" id="email" class="form-input" required>
                         </div>
-                        
+
                         <div class="form-group">
                             <label class="form-label" for="subject">الموضوع *</label>
                             <select id="subject" class="form-select" required>
@@ -411,12 +418,13 @@
                                 <option value="أخرى">أخرى</option>
                             </select>
                         </div>
-                        
+
                         <div class="form-group">
                             <label class="form-label" for="message">الرسالة *</label>
-                            <textarea id="message" class="form-textarea" placeholder="اكتب رسالتك هنا..." required></textarea>
+                            <textarea id="message" class="form-textarea" placeholder="اكتب رسالتك هنا..."
+                                required></textarea>
                         </div>
-                        
+
                         <button type="submit" class="form-submit">
                             <i class="fas fa-paper-plane"></i> إرسال الرسالة
                         </button>
@@ -430,9 +438,11 @@
                 <div class="map-container">
                     <div class="map-placeholder">
                         <div>
-                            <i class="fas fa-map-marker-alt" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 1rem;"></i>
+                            <i class="fas fa-map-marker-alt"
+                                style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 1rem;"></i>
                             <p>خريطة موقع سمارت مان - القاهرة، مصر</p>
-                            <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">123 شارع التحرير، Downtown</p>
+                            <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">123 شارع التحرير، Downtown
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -449,30 +459,33 @@
                                 <i class="fas fa-chevron-down"></i>
                             </div>
                             <div class="faq-answer">
-                                مدة الشحن تتراوح بين 2-5 أيام عمل داخل القاهرة، و3-7 أيام لباقي المحافظات. قد تزيد المدة في الأعياد والمواسم.
+                                مدة الشحن تتراوح بين 2-5 أيام عمل داخل القاهرة، و3-7 أيام لباقي المحافظات. قد تزيد المدة
+                                في الأعياد والمواسم.
                             </div>
                         </div>
-                        
+
                         <div class="faq-item">
                             <div class="faq-question" onclick="toggleFAQ(this)">
                                 هل يمكنني إرجاع أو استبدال المنتج؟
                                 <i class="fas fa-chevron-down"></i>
                             </div>
                             <div class="faq-answer">
-                                نعم، يمكنك إرجاع أو استبدال المنتج خلال 7 أيام من استلامه، بشرط أن يكون بحالته الأصلية وبالفواتير.
+                                نعم، يمكنك إرجاع أو استبدال المنتج خلال 7 أيام من استلامه، بشرط أن يكون بحالته الأصلية
+                                وبالفواتير.
                             </div>
                         </div>
-                        
+
                         <div class="faq-item">
                             <div class="faq-question" onclick="toggleFAQ(this)">
                                 كيف أعرف المقاس المناسب لي؟
                                 <i class="fas fa-chevron-down"></i>
                             </div>
                             <div class="faq-answer">
-                                نوفر دليل مقاسات مفصل على موقعنا. يمكنك أيضاً التواصل مع خدمة العملاء للحصول على استشارة مجانية.
+                                نوفر دليل مقاسات مفصل على موقعنا. يمكنك أيضاً التواصل مع خدمة العملاء للحصول على استشارة
+                                مجانية.
                             </div>
                         </div>
-                        
+
                         <div class="faq-item">
                             <div class="faq-question" onclick="toggleFAQ(this)">
                                 ما هي طرق الدفع المتاحة؟
@@ -494,12 +507,13 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>سمارت مان</h3>
-                    <p>وجهتك الأولى للبدلات الرجالية العصرية والأنيقة. نقدم أفضل التصميمات بأعلى جودة وأسعار تنافسية.</p>
+                    <p>وجهتك الأولى للبدلات الرجالية العصرية والأنيقة. نقدم أفضل التصميمات بأعلى جودة وأسعار تنافسية.
+                    </p>
                     <div class="social-links">
                         <a href="https://www.facebook.com/" target="_blank">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="https://www.instagram.com/" target="_blank">
+                        <a href="https://www.instagram.com/novek32?igsh=MXRvZ3VvOXJjbGpsZA==" target="_blank">
                             <i class="fab fa-instagram"></i>
                         </a>
                         <a href="https://www.tiktok.com/" target="_blank">
@@ -512,7 +526,8 @@
                 </div>
             </div>
         </div>
-    </footer>  
+    </footer>
     <script src="script.js"></script>
 </body>
+
 </html>

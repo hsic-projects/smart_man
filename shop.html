@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -125,7 +126,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             z-index: 2000;
             align-items: center;
             justify-content: center;
@@ -162,8 +163,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .product-actions {
@@ -240,23 +246,24 @@
             .products-list.list-view .product-card {
                 flex-direction: column;
             }
-            
+
             .products-list.list-view .product-image {
                 width: 100%;
                 height: 250px;
             }
-            
+
             .controls-container {
                 flex-direction: column;
                 align-items: stretch;
             }
-            
+
             .filter-section {
                 justify-content: center;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- شريط التنقل -->
     <nav class="navbar">
@@ -351,7 +358,7 @@
             <div class="products-grid grid-view" id="products-container">
                 <!-- سيتم ملؤه بالمنتجات -->
             </div>
-            
+
             <!-- حالة عدم وجود منتجات -->
             <div class="no-products" id="no-products" style="display: none;">
                 <i class="fas fa-search"></i>
@@ -373,12 +380,14 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>سمارت مان</h3>
-                    <p>وجهتك الأولى للبدلات الرجالية العصرية والأنيقة. نقدم أفضل التصميمات بأعلى جودة وأسعار تنافسية.</p>
+                    <p>وجهتك الأولى للبدلات الرجالية العصرية والأنيقة. نقدم أفضل التصميمات بأعلى جودة وأسعار تنافسية.
+                    </p>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/" target="_blank">
+                        <a href="https://www.facebook.com/Novek145?rdid=uWGfD0GHeehcnIyF&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17eN6CehAw%2F#/"
+                            target="_blank">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="https://www.instagram.com/" target="_blank">
+                        <a href="https://www.instagram.com/novek32?igsh=MXRvZ3VvOXJjbGpsZA==" target="_blank">
                             <i class="fab fa-instagram"></i>
                         </a>
                         <a href="https://www.tiktok.com/" target="_blank">
@@ -445,123 +454,124 @@
 
     <script src="script.js"></script>
     <script src="script.js"></script>
-<script>
-    // متغيرات المتجر
-    let currentView = 'grid';
-    let currentPage = 1;
-    const productsPerPage = 9;
-    let filteredProducts = [];
-    let currentFilters = {
-        category: 'all',
-        priceRange: 'all',
-        sortBy: 'default',
-        searchTerm: ''
-    };
-
-    // تهيئة المتجر
-    document.addEventListener('DOMContentLoaded', function() {
-        initShop();
-    });
-
-    // تصفية المنتجات
-    function filterProducts() {
-        currentFilters.category = document.getElementById('category-filter').value;
-        currentPage = 1;
-        updateURL();
-        loadShopProducts();
-    }
-
-    // تصفية حسب السعر
-    function filterByPrice() {
-        currentFilters.priceRange = document.getElementById('price-range').value;
-        currentPage = 1;
-        updateURL();
-        loadShopProducts();
-    }
-
-    // ترتيب المنتجات
-    function sortProducts() {
-        currentFilters.sortBy = document.getElementById('sort-by').value;
-        currentPage = 1;
-        updateURL();
-        loadShopProducts();
-    }
-
-    // تغيير طريقة العرض
-    function changeView(view) {
-        currentView = view;
-        const container = document.getElementById('products-container');
-        const viewBtns = document.querySelectorAll('.view-btn');
-        
-        viewBtns.forEach(btn => btn.classList.remove('active'));
-        event.target.closest('.view-btn').classList.add('active');
-        
-        if (container) {
-            container.className = `products-${view} ${view}-view`;
-        }
-        loadShopProducts();
-    }
-
-    // إعادة تعيين الفلاتر
-    function resetFilters() {
-        document.getElementById('category-filter').value = 'all';
-        document.getElementById('price-range').value = 'all';
-        document.getElementById('sort-by').value = 'default';
-        document.getElementById('search-input').value = '';
-        
-        currentFilters = {
+    <script>
+        // متغيرات المتجر
+        let currentView = 'grid';
+        let currentPage = 1;
+        const productsPerPage = 9;
+        let filteredProducts = [];
+        let currentFilters = {
             category: 'all',
             priceRange: 'all',
             sortBy: 'default',
             searchTerm: ''
         };
-        
-        currentPage = 1;
-        updateURL();
-        loadShopProducts();
-    }
 
-    // البحث في المتجر
-    function searchProducts() {
-        const searchInput = document.getElementById('search-input');
-        currentFilters.searchTerm = searchInput.value;
-        currentPage = 1;
-        updateURL();
-        loadShopProducts();
-    }
+        // تهيئة المتجر
+        document.addEventListener('DOMContentLoaded', function () {
+            initShop();
+        });
 
-    // تطبيق فلاتر من الرابط
-    function applyURLFilters() {
-        const urlParams = new URLSearchParams(window.location.search);
-        
-        if (urlParams.has('category')) {
-            const category = urlParams.get('category');
-            document.getElementById('category-filter').value = category;
-            currentFilters.category = category;
+        // تصفية المنتجات
+        function filterProducts() {
+            currentFilters.category = document.getElementById('category-filter').value;
+            currentPage = 1;
+            updateURL();
+            loadShopProducts();
         }
-        
-        if (urlParams.has('search')) {
-            const search = urlParams.get('search');
-            document.getElementById('search-input').value = search;
-            currentFilters.searchTerm = search;
-        }
-    }
 
-    // تحديث الرابط
-    function updateURL() {
-        const params = new URLSearchParams();
-        
-        if (currentFilters.category !== 'all') {
-            params.set('category', currentFilters.category);
+        // تصفية حسب السعر
+        function filterByPrice() {
+            currentFilters.priceRange = document.getElementById('price-range').value;
+            currentPage = 1;
+            updateURL();
+            loadShopProducts();
         }
-        
-        if (currentFilters.searchTerm) {
-            params.set('search', currentFilters.searchTerm);
+
+        // ترتيب المنتجات
+        function sortProducts() {
+            currentFilters.sortBy = document.getElementById('sort-by').value;
+            currentPage = 1;
+            updateURL();
+            loadShopProducts();
         }
-        
-        const newURL = params.toString() ? `shop.html?${params.toString()}` : 'shop.html';
-        window.history.replaceState({}, '', newURL);
-    }
+
+        // تغيير طريقة العرض
+        function changeView(view) {
+            currentView = view;
+            const container = document.getElementById('products-container');
+            const viewBtns = document.querySelectorAll('.view-btn');
+
+            viewBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.view-btn').classList.add('active');
+
+            if (container) {
+                container.className = `products-${view} ${view}-view`;
+            }
+            loadShopProducts();
+        }
+
+        // إعادة تعيين الفلاتر
+        function resetFilters() {
+            document.getElementById('category-filter').value = 'all';
+            document.getElementById('price-range').value = 'all';
+            document.getElementById('sort-by').value = 'default';
+            document.getElementById('search-input').value = '';
+
+            currentFilters = {
+                category: 'all',
+                priceRange: 'all',
+                sortBy: 'default',
+                searchTerm: ''
+            };
+
+            currentPage = 1;
+            updateURL();
+            loadShopProducts();
+        }
+
+        // البحث في المتجر
+        function searchProducts() {
+            const searchInput = document.getElementById('search-input');
+            currentFilters.searchTerm = searchInput.value;
+            currentPage = 1;
+            updateURL();
+            loadShopProducts();
+        }
+
+        // تطبيق فلاتر من الرابط
+        function applyURLFilters() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            if (urlParams.has('category')) {
+                const category = urlParams.get('category');
+                document.getElementById('category-filter').value = category;
+                currentFilters.category = category;
+            }
+
+            if (urlParams.has('search')) {
+                const search = urlParams.get('search');
+                document.getElementById('search-input').value = search;
+                currentFilters.searchTerm = search;
+            }
+        }
+
+        // تحديث الرابط
+        function updateURL() {
+            const params = new URLSearchParams();
+
+            if (currentFilters.category !== 'all') {
+                params.set('category', currentFilters.category);
+            }
+
+            if (currentFilters.searchTerm) {
+                params.set('search', currentFilters.searchTerm);
+            }
+
+            const newURL = params.toString() ? `shop.html?${params.toString()}` : 'shop.html';
+            window.history.replaceState({}, '', newURL);
+        }
     </script>
 </body>
+
 </html>
