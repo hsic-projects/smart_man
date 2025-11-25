@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتصل بنا - سمارت مان</title>
+    <meta name="description" content="تواصل مع فريق سمارت مان - نحن هنا لمساعدتك في كل استفساراتك">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .contact-hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .contact-content {
+            padding: 4rem 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .contact-info {
+            background: var(--light-bg);
+            padding: 3rem;
+            border-radius: 15px;
+            height: fit-content;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .contact-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .contact-details h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-details p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-submit {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-submit:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .map-section {
+            margin: 4rem 0;
+        }
+
+        .map-container {
+            height: 400px;
+            background: var(--light-bg);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .faq-section {
+            background: var(--light-bg);
+            padding: 4rem 0;
+            margin: 4rem 0;
+        }
+
+        .faq-grid {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .faq-answer {
+            padding: 1.5rem;
+            display: none;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .business-hours {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .hours-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .hours-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hours-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .hours-table td:first-child {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .contact-info, .contact-form {
+                padding: 2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .map-container {
+                height: 300px;
+            }
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">سمارت مان</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="shop.html">المتجر</a></li>
+                <li><a href="about.html">من نحن</a></li>
+                <li><a href="contact.html" class="active">اتصل بنا</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="search-bar">
+                    <input type="text" placeholder="ابحث عن منتج..." id="search-input">
+                    <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="nav-icons">
+                    <a href="#" class="nav-icon" id="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a>
+                    <a href="#" class="nav-icon">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- رأس الصفحة -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1>اتصل بنا</h1>
+            <p>نحن هنا لمساعدتك في كل استفساراتك وطلباتك</p>
+        </div>
+    </section>
+
+    <!-- محتوى الصفحة -->
+    <section class="contact-content">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- معلومات الاتصال -->
+                <div class="contact-info">
+                    <h2 style="color: var(--primary-color); margin-bottom: 2rem;">معلومات التواصل</h2>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>العنوان</h3>
+                            <p>123 شارع التحرير، Downtown<br>القاهرة، مصر</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>الهاتف</h3>
+                            <p>+20 123 456 7890<br>+20 098 765 4321</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>البريد الإلكتروني</h3>
+                            <p>info@smartman.com<br>support@smartman.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>ساعات العمل</h3>
+                            <p>السبت - الخميس: 9 ص - 10 م<br>الجمعة: 1 م - 10 م</p>
+                        </div>
+                    </div>
+
+                    <!-- ساعات العمل -->
+                    <div class="business-hours">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">ساعات العمل التفصيلية</h3>
+                        <table class="hours-table">
+                            <tr>
+                                <td>السبت - الخميس</td>
+                                <td>9:00 ص - 10:00 م</td>
+                            </tr>
+                            <tr>
+                                <td>الجمعة</td>
+                                <td>1:00 م - 10:00 م</td>
+                            </tr>
+                            <tr>
+                                <td>خدمة العملاء</td>
+                                <td>24/7 عبر الواتساب</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- نموذج الاتصال -->
+                <div class="contact-form">
+                    <h2 style="color: var(--primary-color); margin-bottom: 2rem;">أرسل رسالة</h2>
+                    
+                    <div class="success-message" id="success-message">
+                        <i class="fas fa-check-circle"></i> تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.
+                    </div>
+                    
+                    <div class="error-message" id="error-message">
+                        <i class="fas fa-exclamation-circle"></i> حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.
+                    </div>
+                    
+                    <form id="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="name">الاسم الكامل *</label>
+                                <input type="text" id="name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="phone">رقم الهاتف *</label>
+                                <input type="tel" id="phone" class="form-input" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="email">البريد الإلكتروني *</label>
+                            <input type="email" id="email" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="subject">الموضوع *</label>
+                            <select id="subject" class="form-select" required>
+                                <option value="">اختر الموضوع</option>
+                                <option value="استفسار عن منتج">استفسار عن منتج</option>
+                                <option value="مشكلة في الطلب">مشكلة في الطلب</option>
+                                <option value="استفسار عن الشحن">استفسار عن الشحن</option>
+                                <option value="الإرجاع والاستبدال">الإرجاع والاستبدال</option>
+                                <option value="اقتراحات">اقتراحات</option>
+                                <option value="شكوى">شكوى</option>
+                                <option value="أخرى">أخرى</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="message">الرسالة *</label>
+                            <textarea id="message" class="form-textarea" placeholder="اكتب رسالتك هنا..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="form-submit">
+                            <i class="fas fa-paper-plane"></i> إرسال الرسالة
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- الخريطة -->
+            <section class="map-section">
+                <h2 class="section-title">موقعنا</h2>
+                <div class="map-container">
+                    <div class="map-placeholder">
+                        <div>
+                            <i class="fas fa-map-marker-alt" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 1rem;"></i>
+                            <p>خريطة موقع سمارت مان - القاهرة، مصر</p>
+                            <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">123 شارع التحرير، Downtown</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- الأسئلة الشائعة -->
+            <section class="faq-section">
+                <div class="container">
+                    <h2 class="section-title">الأسئلة الشائعة</h2>
+                    <div class="faq-grid">
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                ما هي مدة الشحن المتوقعة؟
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                مدة الشحن تتراوح بين 2-5 أيام عمل داخل القاهرة، و3-7 أيام لباقي المحافظات. قد تزيد المدة في الأعياد والمواسم.
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                هل يمكنني إرجاع أو استبدال المنتج؟
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                نعم، يمكنك إرجاع أو استبدال المنتج خلال 7 أيام من استلامه، بشرط أن يكون بحالته الأصلية وبالفواتير.
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                كيف أعرف المقاس المناسب لي؟
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                نوفر دليل مقاسات مفصل على موقعنا. يمكنك أيضاً التواصل مع خدمة العملاء للحصول على استشارة مجانية.
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                ما هي طرق الدفع المتاحة؟
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                نقدم多种 طرق الدفع: الدفع عند الاستلام، التحويل البنكي، وبطاقات الائتمان والخصم.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>سمارت مان</h3>
+                    <p>وجهتك الأولى للبدلات الرجالية العصرية والأنيقة. نقدم أفضل التصميمات بأعلى جودة وأسعار تنافسية.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/" target="_blank">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="https://wa.me/201234567890" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>  
+    <script src="script.js"></script>
+</body>
+</html>
