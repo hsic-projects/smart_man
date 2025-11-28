@@ -1,139 +1,142 @@
-// بيانات المنتجات (مشتركة بين جميع الصفحات)
+// Product Data
 const products = [
     {
         id: 1,
-        name: "بدلة عمل كلاسيكية",
+        name: "Classic Business Suit",
         category: "business",
         price: 1200,
         originalPrice: 1500,
         image: "images/suit1.jpg",
-        badge: "جديد",
+        badge: "New",
         featured: true,
-        description: "بدلة عمل كلاسيكية مناسبة للمكاتب والاجتماعات الرسمية. مصنوعة من قماش عالي الجودة مع خياطة دقيقة."
+        description: "Classic business suit suitable for offices and formal meetings. Made of high-quality fabric with precise stitching."
     },
     {
         id: 2,
-        name: "بدلة سهرة أنيقة",
+        name: "Elegant Evening Suit",
         category: "wedding",
         price: 1800,
         originalPrice: 2200,
         image: "images/suit2.jpg",
-        badge: "عرض",
+        badge: "Offer",
         featured: true,
-        description: "بدلة سهرة فاخرة للمناسبات الخاصة والأفراح. تصميم أنيق يعكس الذوق الرفيع."
+        description: "Luxury evening suit for special occasions and weddings. Elegant design reflecting high taste."
     },
     {
         id: 3,
-        name: "بدلة كاجوال صيفية",
+        name: "Summer Casual Suit",
         category: "casual",
         price: 900,
         originalPrice: 1100,
         image: "images/suit3.jpg",
-        badge: "الأكثر مبيعاً",
+        badge: "Best Seller",
         featured: true,
-        description: "بدلة كاجوال مريحة للارتداء اليومي. مثالية للخروجات والعطلات."
+        description: "Comfortable casual suit for daily wear. Perfect for outings and holidays."
     },
     {
         id: 4,
-        name: "بدلة تنفيذية رمادية",
+        name: "Grey Executive Suit",
         category: "business",
         price: 1500,
         originalPrice: 1800,
         image: "images/suit4.jpg",
         featured: false,
-        description: "بدلة تنفيذية باللون الرمادي العصري. تناسب رجال الأعمال والمديرين."
+        description: "Executive suit in modern grey color. Suitable for businessmen and managers."
     },
     {
         id: 5,
-        name: "بدلة زفاف فاخرة",
+        name: "Luxury Wedding Suit",
         category: "wedding",
         price: 2500,
         originalPrice: 3000,
         image: "images/suit5.jpg",
         featured: false,
-        description: "بدلة زفاف فاخرة بتصميم مميز. مثالية لليلة العمر."
+        description: "Luxury wedding suit with a unique design. Perfect for the big day."
     },
     {
         id: 6,
-        name: "بدلة رياضية مريحة",
+        name: "Comfortable Sport Suit",
         category: "casual",
         price: 800,
         originalPrice: 1000,
         image: "images/suit6.jpg",
         featured: false,
-        description: "بدلة رياضية مريحة للارتداء اليومي. تتميز بالمرونة والراحة."
+        description: "Comfortable sport suit for daily wear. Features flexibility and comfort."
     },
     {
         id: 7,
-        name: "بدلة عمل زرقاء",
+        name: "Blue Business Suit",
         category: "business",
         price: 1300,
         originalPrice: 1600,
         image: "images/suit7.jpg",
-        badge: "جديد",
+        badge: "New",
         featured: false,
-        description: "بدلة عمل باللون الأزرق الداكن. أنيقة ومناسبة للاجتماعات المهمة."
+        description: "Dark blue business suit. Elegant and suitable for important meetings."
     },
     {
         id: 8,
-        name: "بدلة أفراح سوداء",
+        name: "Black Wedding Suit",
         category: "wedding",
         price: 2200,
         originalPrice: 2800,
         image: "images/suit8.jpg",
         featured: false,
-        description: "بدلة أفراح سوداء بتصميم عصري. تجمع بين الأناقة والحداثة."
+        description: "Black wedding suit with a modern design. Combines elegance and modernity."
     },
     {
         id: 9,
-        name: "بدلة كاجوال بنية",
+        name: "Brown Casual Suit",
         category: "casual",
         price: 950,
         originalPrice: 1200,
         image: "images/suit9.jpg",
         featured: false,
-        description: "بدلة كاجوال باللون البني الفاتح. مثالية للقاءات العائلية والمناسبات غير الرسمية."
+        description: "Light brown casual suit. Perfect for family gatherings and informal occasions."
     }
 ];
 
-// الحصول على اسم التصنيف
+// Cart Data
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+// Get Category Name
 function getCategoryName(category) {
     const categories = {
-        'business': 'بدلات عمل',
-        'wedding': 'بدلات أفراح',
-        'casual': 'بدلات كاجوال'
+        'business': 'Business Suits',
+        'wedding': 'Wedding Suits',
+        'casual': 'Casual Suits'
     };
     return categories[category] || category;
 }
 
-// تحميل المنتجات في صفحة المتجر
+// Load Shop Products
 function loadShopProducts() {
     const container = document.getElementById('products-container');
     const resultsInfo = document.getElementById('results-info');
     const noProducts = document.getElementById('no-products');
-    
+
     if (!container) return;
-    
-    // تطبيق الفلاتر
+
+    // Apply Filters
     applyFilters();
-    
-    // حساب عدد الصفحات
+
+    // Calculate Total Pages
     const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-    
-    // عرض المنتجات للصفحة الحالية
+
+    // Display Products for Current Page
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
     const currentProducts = filteredProducts.slice(startIndex, endIndex);
-    
+
     if (currentProducts.length === 0) {
         container.style.display = 'none';
         if (noProducts) noProducts.style.display = 'block';
-        if (resultsInfo) resultsInfo.textContent = 'لم نعثر على منتجات';
+        if (resultsInfo) resultsInfo.textContent = 'No products found';
     } else {
         container.style.display = currentView === 'grid' ? 'grid' : 'block';
         if (noProducts) noProducts.style.display = 'none';
         container.className = `products-${currentView} ${currentView}-view`;
-        
+
         container.innerHTML = currentProducts.map(product => `
             <div class="product-card" data-id="${product.id}">
                 <div class="product-image">
@@ -145,51 +148,51 @@ function loadShopProducts() {
                     <h3>${product.name}</h3>
                     <p class="category">${getCategoryName(product.category)}</p>
                     <p class="price">
-                        ${product.price} ج.م
-                        ${product.originalPrice ? `<span class="original-price">${product.originalPrice} ج.م</span>` : ''}
+                        ${product.price} EGP
+                        ${product.originalPrice ? `<span class="original-price">${product.originalPrice} EGP</span>` : ''}
                     </p>
                     <div class="product-actions">
                         <button class="add-to-cart" onclick="addToCart(${product.id})">
-                            أضف إلى السلة
+                            Add to Cart
                         </button>
                         <button class="quick-view-btn" onclick="openQuickView(${product.id})">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button class="wishlist-btn" onclick="toggleWishlist(${product.id})">
-                            <i class="far fa-heart"></i>
+                        <button class="wishlist-btn ${isInWishlist(product.id) ? 'active' : ''}" onclick="toggleWishlist(${product.id}, this)">
+                            <i class="${isInWishlist(product.id) ? 'fas' : 'far'} fa-heart"></i>
                         </button>
                     </div>
                 </div>
             </div>
         `).join('');
-        
-        // تحديث معلومات النتائج
+
+        // Update Results Info
         if (resultsInfo) {
             const totalResults = filteredProducts.length;
             const showingStart = startIndex + 1;
             const showingEnd = Math.min(endIndex, totalResults);
-            resultsInfo.textContent = `عرض ${showingStart}-${showingEnd} من ${totalResults} منتج`;
+            resultsInfo.textContent = `Showing ${showingStart}-${showingEnd} of ${totalResults} products`;
         }
     }
-    
-    // تحديث الترقيم
+
+    // Update Pagination
     updatePagination(totalPages);
 }
 
-// تطبيق الفلاتر
+// Apply Filters
 function applyFilters() {
     let results = [...products];
-    
-    // تصفية حسب التصنيف
+
+    // Filter by Category
     if (currentFilters && currentFilters.category !== 'all') {
         results = results.filter(product => product.category === currentFilters.category);
     }
-    
-    // تصفية حسب نطاق السعر
+
+    // Filter by Price Range
     if (currentFilters && currentFilters.priceRange !== 'all') {
         results = results.filter(product => {
             const price = product.price;
-            switch(currentFilters.priceRange) {
+            switch (currentFilters.priceRange) {
                 case '0-1000': return price <= 1000;
                 case '1000-2000': return price > 1000 && price <= 2000;
                 case '2000-3000': return price > 2000 && price <= 3000;
@@ -198,19 +201,19 @@ function applyFilters() {
             }
         });
     }
-    
-    // تصفية حسب البحث
+
+    // Filter by Search Term
     if (currentFilters && currentFilters.searchTerm) {
         const searchTerm = currentFilters.searchTerm.toLowerCase();
-        results = results.filter(product => 
+        results = results.filter(product =>
             product.name.toLowerCase().includes(searchTerm) ||
             getCategoryName(product.category).toLowerCase().includes(searchTerm)
         );
     }
-    
-    // الترتيب
+
+    // Sorting
     if (currentFilters) {
-        switch(currentFilters.sortBy) {
+        switch (currentFilters.sortBy) {
             case 'price-low':
                 results.sort((a, b) => a.price - b.price);
                 break;
@@ -218,35 +221,35 @@ function applyFilters() {
                 results.sort((a, b) => b.price - a.price);
                 break;
             case 'name':
-                results.sort((a, b) => a.name.localeCompare(b.name, 'ar'));
+                results.sort((a, b) => a.name.localeCompare(b.name));
                 break;
             default:
-                // الترتيب الافتراضي
+                // Default sorting
                 break;
         }
     }
-    
+
     filteredProducts = results;
 }
 
-// تحديث الترقيم
+// Update Pagination
 function updatePagination(totalPages) {
     const pagination = document.getElementById('pagination');
     if (!pagination) return;
-    
+
     if (totalPages <= 1) {
         pagination.innerHTML = '';
         return;
     }
-    
+
     let paginationHTML = '';
-    
-    // زر السابق
+
+    // Previous Button
     if (currentPage > 1) {
-        paginationHTML += `<button class="page-btn" onclick="goToPage(${currentPage - 1})">السابق</button>`;
+        paginationHTML += `<button class="page-btn" onclick="goToPage(${currentPage - 1})">Previous</button>`;
     }
-    
-    // أرقام الصفحات
+
+    // Page Numbers
     for (let i = 1; i <= totalPages; i++) {
         if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
             paginationHTML += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
@@ -254,52 +257,52 @@ function updatePagination(totalPages) {
             paginationHTML += `<span class="page-btn">...</span>`;
         }
     }
-    
-    // زر التالي
+
+    // Next Button
     if (currentPage < totalPages) {
-        paginationHTML += `<button class="page-btn" onclick="goToPage(${currentPage + 1})">التالي</button>`;
+        paginationHTML += `<button class="page-btn" onclick="goToPage(${currentPage + 1})">Next</button>`;
     }
-    
+
     pagination.innerHTML = paginationHTML;
 }
 
-// الانتقال إلى صفحة
+// Go to Page
 function goToPage(page) {
     currentPage = page;
     loadShopProducts();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// فتح العرض السريع
+// Open Quick View
 function openQuickView(productId) {
     const product = products.find(p => p.id === productId);
     if (!product) return;
-    
+
     const modal = document.getElementById('quick-view-modal');
     const content = document.getElementById('quick-view-content');
-    
+
     if (!modal || !content) return;
-    
+
     content.innerHTML = `
-        <div style="display: flex; gap: 2rem; padding: 2rem;">
-            <div style="flex: 1;">
+        <div style="display: flex; gap: 2rem; padding: 2rem; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
                 <div style="width: 100%; height: 400px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                     <img src="${product.image}" alt="${product.name}" style="max-width: 100%; max-height: 100%; border-radius: 10px;" onerror="this.style.display='none'">
                     <span style="color: #999;">${product.name}</span>
                 </div>
             </div>
-            <div style="flex: 1; padding: 1rem;">
+            <div style="flex: 1; min-width: 300px; padding: 1rem;">
                 <h2 style="margin-bottom: 1rem; color: var(--primary-color);">${product.name}</h2>
                 <p class="category" style="color: #666; margin-bottom: 1rem;">${getCategoryName(product.category)}</p>
                 <p class="price" style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color); margin-bottom: 1.5rem;">
-                    ${product.price} ج.م
-                    ${product.originalPrice ? `<span class="original-price" style="font-size: 1.2rem;">${product.originalPrice} ج.م</span>` : ''}
+                    ${product.price} EGP
+                    ${product.originalPrice ? `<span class="original-price" style="font-size: 1.2rem;">${product.originalPrice} EGP</span>` : ''}
                 </p>
                 <p style="line-height: 1.6; margin-bottom: 2rem; color: #555;">
                     ${product.description}
                 </p>
                 <div style="margin-bottom: 2rem;">
-                    <h4 style="margin-bottom: 1rem;">المقاسات المتاحة:</h4>
+                    <h4 style="margin-bottom: 1rem;">Available Sizes:</h4>
                     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                         <button class="size-btn" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">S</button>
                         <button class="size-btn" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">M</button>
@@ -309,16 +312,16 @@ function openQuickView(productId) {
                     </div>
                 </div>
                 <button class="add-to-cart" onclick="addToCart(${product.id}); closeQuickView();" style="width: 100%; padding: 15px; font-size: 1.1rem;">
-                    أضف إلى السلة
+                    Add to Cart
                 </button>
             </div>
         </div>
     `;
-    
+
     modal.style.display = 'flex';
 }
 
-// إغلاق العرض السريع
+// Close Quick View
 function closeQuickView() {
     const modal = document.getElementById('quick-view-modal');
     if (modal) {
@@ -326,25 +329,198 @@ function closeQuickView() {
     }
 }
 
-// إضافة إلى المفضلة
-function toggleWishlist(productId) {
+// Check if product is in wishlist
+function isInWishlist(productId) {
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    return wishlist.includes(productId);
+}
+
+// Toggle Wishlist
+function toggleWishlist(productId, btnElement) {
     let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
     const index = wishlist.indexOf(productId);
-    
+
     if (index > -1) {
         wishlist.splice(index, 1);
-        showNotification('تم إزالة المنتج من المفضلة');
+        showNotification('Product removed from wishlist');
+        if (btnElement) {
+            btnElement.classList.remove('active');
+            const icon = btnElement.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+            }
+        }
     } else {
         wishlist.push(productId);
-        showNotification('تم إضافة المنتج إلى المفضلة');
+        showNotification('Product added to wishlist');
+        if (btnElement) {
+            btnElement.classList.add('active');
+            const icon = btnElement.querySelector('i');
+            if (icon) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+            }
+        }
     }
-    
+
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
 }
 
-// تهيئة المتجر
+// Add to Cart
+function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const existingItem = cart.find(item => item.id === productId);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            quantity: 1
+        });
+    }
+
+    saveCart();
+    updateCartUI();
+    openCart();
+    showNotification('Product added to cart');
+}
+
+// Remove from Cart
+function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    saveCart();
+    updateCartUI();
+}
+
+// Update Quantity
+function updateQuantity(productId, change) {
+    const item = cart.find(item => item.id === productId);
+    if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+            removeFromCart(productId);
+        } else {
+            saveCart();
+            updateCartUI();
+        }
+    }
+}
+
+// Save Cart to LocalStorage
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+// Update Cart UI
+function updateCartUI() {
+    const cartCount = document.getElementById('cart-count');
+    const cartItems = document.getElementById('cart-items');
+    const cartTotalPrice = document.getElementById('cart-total-price');
+
+    // Update Count
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    if (cartCount) cartCount.textContent = totalItems;
+
+    // Update Items List
+    if (cartItems) {
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<p style="text-align: center; padding: 2rem; color: #666;">Your cart is empty</p>';
+        } else {
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-image" onerror="this.style.display='none'">
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">${item.price} EGP</div>
+                        <div class="cart-item-actions">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            <button class="remove-item" onclick="removeFromCart(${item.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // Update Total Price
+    if (cartTotalPrice) {
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        cartTotalPrice.textContent = total;
+    }
+}
+
+// Open Cart
+function openCart() {
+    const cartSidebar = document.getElementById('cart-sidebar');
+    if (cartSidebar) {
+        cartSidebar.classList.add('active');
+    }
+}
+
+// Close Cart
+function closeCart() {
+    const cartSidebar = document.getElementById('cart-sidebar');
+    if (cartSidebar) {
+        cartSidebar.classList.remove('active');
+    }
+}
+
+// Checkout
+function checkout() {
+    if (cart.length === 0) {
+        showNotification('Your cart is empty');
+        return;
+    }
+    alert('Proceeding to checkout with total: ' + document.getElementById('cart-total-price').textContent + ' EGP');
+    // Implement checkout logic here
+}
+
+// Show Notification
+function showNotification(message) {
+    // Create notification element if it doesn't exist
+    let notification = document.getElementById('notification-toast');
+    if (!notification) {
+        notification = document.createElement('div');
+        notification.id = 'notification-toast';
+        document.body.appendChild(notification);
+
+        // Add styles dynamically
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.left = '50%';
+        notification.style.transform = 'translateX(-50%)';
+        notification.style.backgroundColor = '#333';
+        notification.style.color = 'white';
+        notification.style.padding = '15px 25px';
+        notification.style.borderRadius = '5px';
+        notification.style.zIndex = '3000';
+        notification.style.opacity = '0';
+        notification.style.transition = 'opacity 0.3s ease';
+        notification.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+    }
+
+    notification.textContent = message;
+    notification.style.opacity = '1';
+
+    setTimeout(() => {
+        notification.style.opacity = '0';
+    }, 3000);
+}
+
+// Init Shop
 function initShop() {
-    // تعريف المتغيرات إذا لم تكن موجودة
+    // Define variables if not exist
     if (typeof currentView === 'undefined') {
         window.currentView = 'grid';
     }
@@ -365,31 +541,93 @@ function initShop() {
             searchTerm: ''
         };
     }
-    
+
     loadShopProducts();
     setupShopEventListeners();
     applyURLFilters();
+    updateCartUI(); // Initialize cart UI
 }
 
-// إعداد مستمعي الأحداث للمتجر
+// Setup Shop Event Listeners
 function setupShopEventListeners() {
-    // إغلاق العرض السريع عند النقر خارج المحتوى
+    // Close Quick View when clicking outside
     const quickViewModal = document.getElementById('quick-view-modal');
     if (quickViewModal) {
-        quickViewModal.addEventListener('click', function(e) {
+        quickViewModal.addEventListener('click', function (e) {
             if (e.target === this) {
                 closeQuickView();
             }
         });
     }
-    
-    // البحث عند الضغط على Enter
+
+    // Search on Enter
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
-        searchInput.addEventListener('keypress', function(e) {
+        searchInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 searchProducts();
             }
         });
     }
+
+    // Cart Icon Click
+    const cartIcon = document.getElementById('cart-icon');
+    if (cartIcon) {
+        cartIcon.addEventListener('click', function (e) {
+            e.preventDefault();
+            openCart();
+        });
+    }
 }
+
+// Load Featured Products
+function loadFeaturedProducts() {
+    const container = document.getElementById('featured-products');
+    if (!container) return;
+
+    const featured = products.filter(p => p.featured).slice(0, 4);
+
+    container.innerHTML = featured.map(product => `
+        <div class="product-card" data-id="${product.id}">
+            <div class="product-image">
+                ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                <img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'">
+                <span style="display: none;">${product.name}</span>
+            </div>
+            <div class="product-card-content">
+                <h3>${product.name}</h3>
+                <p class="category">${getCategoryName(product.category)}</p>
+                <p class="price">
+                    ${product.price} EGP
+                    ${product.originalPrice ? `<span class="original-price">${product.originalPrice} EGP</span>` : ''}
+                </p>
+                <div class="product-actions">
+                    <button class="add-to-cart" onclick="addToCart(${product.id})">
+                        Add to Cart
+                    </button>
+                    <button class="quick-view-btn" onclick="openQuickView(${product.id})">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="wishlist-btn ${isInWishlist(product.id) ? 'active' : ''}" onclick="toggleWishlist(${product.id}, this)">
+                        <i class="${isInWishlist(product.id) ? 'fas' : 'far'} fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Initialize on page load if needed (for non-shop pages)
+document.addEventListener('DOMContentLoaded', function () {
+    updateCartUI();
+    loadFeaturedProducts();
+
+    // Cart Icon Click (Global)
+    const cartIcon = document.getElementById('cart-icon');
+    if (cartIcon) {
+        cartIcon.addEventListener('click', function (e) {
+            e.preventDefault();
+            openCart();
+        });
+    }
+});

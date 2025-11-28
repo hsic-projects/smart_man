@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المتجر - سمارت مان</title>
-    <meta name="description" content="متجر سمارت مان - اكتشف أحدث تشكيلة البدلات الرجالية">
+    <title>Shop - Novek</title>
+    <meta name="description" content="Novek Shop - Discover the latest collection of men's suits">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
@@ -144,7 +144,8 @@
         .quick-view-close {
             position: absolute;
             top: 1rem;
-            left: 1rem;
+            right: 1rem;
+            left: auto;
             background: none;
             border: none;
             color: white;
@@ -207,7 +208,7 @@
             background: var(--light-bg);
         }
 
-        /* تخطيط الشبكة والقائمة */
+        /* Grid and List Layout */
         .products-grid.grid-view {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -220,7 +221,7 @@
 
         .products-list.list-view .product-card {
             display: flex;
-            text-align: right;
+            text-align: left;
             margin-bottom: 2rem;
         }
 
@@ -265,21 +266,24 @@
 </head>
 
 <body>
-    <!-- شريط التنقل -->
+    <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <a href="index.html">سمارت مان</a>
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Novek Logo" class="logo-img">
+                    Novek
+                </a>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html">الرئيسية</a></li>
-                <li><a href="shop.html" class="active">المتجر</a></li>
-                <li><a href="about.html">من نحن</a></li>
-                <li><a href="contact.html">اتصل بنا</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html" class="active">Shop</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
             </ul>
             <div class="nav-actions">
                 <div class="search-bar">
-                    <input type="text" placeholder="ابحث عن منتج..." id="search-input">
+                    <input type="text" placeholder="Search for a product..." id="search-input">
                     <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
                 </div>
                 <div class="nav-icons">
@@ -295,45 +299,45 @@
         </div>
     </nav>
 
-    <!-- رأس المتجر -->
+    <!-- Shop Header -->
     <section class="shop-header">
         <div class="container">
-            <h1>متجر سمارت مان</h1>
-            <p>اكتشف تشكيلتنا الواسعة من البدلات الرجالية</p>
+            <h1>Novek Shop</h1>
+            <p>Discover our wide collection of men's suits</p>
         </div>
     </section>
 
-    <!-- عناصر التحكم -->
+    <!-- Controls -->
     <section class="shop-controls">
         <div class="container">
             <div class="controls-container">
                 <div class="filter-section">
                     <div class="filter-group">
-                        <label for="category-filter">التصنيف:</label>
+                        <label for="category-filter">Category:</label>
                         <select id="category-filter" class="filter-select" onchange="filterProducts()">
-                            <option value="all">جميع التصنيفات</option>
-                            <option value="business">بدلات عمل</option>
-                            <option value="wedding">بدلات أفراح</option>
-                            <option value="casual">بدلات كاجوال</option>
+                            <option value="all">All Categories</option>
+                            <option value="business">Business Suits</option>
+                            <option value="wedding">Wedding Suits</option>
+                            <option value="casual">Casual Suits</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="sort-by">ترتيب حسب:</label>
+                        <label for="sort-by">Sort By:</label>
                         <select id="sort-by" class="filter-select" onchange="sortProducts()">
-                            <option value="default">الإفتراضي</option>
-                            <option value="price-low">السعر: من الأقل للأعلى</option>
-                            <option value="price-high">السعر: من الأعلى للأقل</option>
-                            <option value="name">الاسم</option>
+                            <option value="default">Default</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="name">Name</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="price-range">نطاق السعر:</label>
+                        <label for="price-range">Price Range:</label>
                         <select id="price-range" class="filter-select" onchange="filterByPrice()">
-                            <option value="all">جميع الأسعار</option>
-                            <option value="0-1000">حتى 1000 ج.م</option>
-                            <option value="1000-2000">1000 - 2000 ج.م</option>
-                            <option value="2000-3000">2000 - 3000 ج.م</option>
-                            <option value="3000+">أكثر من 3000 ج.م</option>
+                            <option value="all">All Prices</option>
+                            <option value="0-1000">Under 1000 EGP</option>
+                            <option value="1000-2000">1000 - 2000 EGP</option>
+                            <option value="2000-3000">2000 - 3000 EGP</option>
+                            <option value="3000+">Over 3000 EGP</option>
                         </select>
                     </div>
                 </div>
@@ -349,113 +353,111 @@
         </div>
     </section>
 
-    <!-- المنتجات -->
+    <!-- Products -->
     <section class="products">
         <div class="container">
             <div class="results-info" id="results-info">
-                جاري تحميل المنتجات...
+                Loading products...
             </div>
             <div class="products-grid grid-view" id="products-container">
-                <!-- سيتم ملؤه بالمنتجات -->
+                <!-- Will be filled with products -->
             </div>
 
-            <!-- حالة عدم وجود منتجات -->
+            <!-- No Products State -->
             <div class="no-products" id="no-products" style="display: none;">
                 <i class="fas fa-search"></i>
-                <h3>لم نعثر على منتجات</h3>
-                <p>جرب تغيير عوامل التصفية أو مصطلحات البحث</p>
-                <button class="cta-button secondary" onclick="resetFilters()">إعادة تعيين الفلاتر</button>
+                <h3>No products found</h3>
+                <p>Try changing filters or search terms</p>
+                <button class="cta-button secondary" onclick="resetFilters()">Reset Filters</button>
             </div>
 
-            <!-- الترقيم -->
+            <!-- Pagination -->
             <div class="pagination" id="pagination">
-                <!-- سيتم ملؤه ديناميكياً -->
+                <!-- Will be filled dynamically -->
             </div>
         </div>
     </section>
 
-    <!-- الفوتر -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>سمارت مان</h3>
-                    <p>وجهتك الأولى للبدلات الرجالية العصرية والأنيقة. نقدم أفضل التصميمات بأعلى جودة وأسعار تنافسية.
+                    <h3>Novek</h3>
+                    <p>Your first destination for modern and elegant men's suits. We offer the best designs with the
+                        highest quality and competitive prices.
                     </p>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/Novek145?rdid=uWGfD0GHeehcnIyF&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17eN6CehAw%2F#/"
+                        <a href="https://www.facebook.com/Novek145?rdid=uWGfD0GHeehcnIyF&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17eN6CehAw%2F#/Novek145?rdid=uWGfD0GHeehcnIyF&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17eN6CehAw%2F#/"
                             target="_blank">
                             <i class="fab fa-facebook-f"></i>
                         </a>
                         <a href="https://www.instagram.com/novek32?igsh=MXRvZ3VvOXJjbGpsZA==" target="_blank">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="https://www.tiktok.com/" target="_blank">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                        <a href="https://wa.me/201234567890" target="_blank">
+
+                        <a href="https://wa.me/201203876832" target="_blank">
                             <i class="fab fa-whatsapp"></i>
                         </a>
                     </div>
                 </div>
                 <div class="footer-section">
-                    <h4>روابط سريعة</h4>
+                    <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="index.html">الرئيسية</a></li>
-                        <li><a href="shop.html">المتجر</a></li>
-                        <li><a href="about.html">من نحن</a></li>
-                        <li><a href="contact.html">اتصل بنا</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>خدمة العملاء</h4>
+                    <h4>Customer Service</h4>
                     <ul>
-                        <li><a href="#">الشحن والتوصيل</a></li>
-                        <li><a href="#">سياسة الإرجاع</a></li>
-                        <li><a href="#">الأسئلة الشائعة</a></li>
-                        <li><a href="#">دليل المقاسات</a></li>
+                        <li><a href="#">Shipping & Delivery</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Size Guide</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>معلومات الاتصال</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</p>
-                    <p><i class="fas fa-phone"></i> 01234567890</p>
-                    <p><i class="fas fa-envelope"></i> info@smartman.com</p>
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Cairo, Egypt</p>
+                    <p><i class="fas fa-phone"></i> 01203876832</p>
+                    <p><i class="fas fa-envelope"></i> info@novek.com</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2024 سمارت مان. جميع الحقوق محفوظة.</p>
+                <p>© 2024 Novek. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- سلة التسوق -->
+    <!-- Shopping Cart -->
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
-            <h3>سلة التسوق</h3>
+            <h3>Shopping Cart</h3>
             <button class="close-cart" onclick="closeCart()">&times;</button>
         </div>
         <div class="cart-items" id="cart-items">
-            <!-- سيتم ملؤه بالمنتجات -->
+            <!-- Will be filled with products -->
         </div>
         <div class="cart-total">
-            <p>المجموع: <span id="cart-total-price">0</span> ج.م</p>
-            <button class="checkout-btn" onclick="checkout()">إتمام الشراء</button>
+            <p>Total: <span id="cart-total-price">0</span> EGP</p>
+            <button class="checkout-btn" onclick="checkout()">Checkout</button>
         </div>
     </div>
 
-    <!-- نافذة العرض السريع -->
+    <!-- Quick View Modal -->
     <div class="quick-view-modal" id="quick-view-modal">
         <button class="quick-view-close" onclick="closeQuickView()">&times;</button>
         <div class="quick-view-content" id="quick-view-content">
-            <!-- سيتم ملؤه ديناميكياً -->
+            <!-- Will be filled dynamically -->
         </div>
     </div>
 
     <script src="script.js"></script>
-    <script src="script.js"></script>
     <script>
-        // متغيرات المتجر
+        // Shop Variables
         let currentView = 'grid';
         let currentPage = 1;
         const productsPerPage = 9;
@@ -467,12 +469,12 @@
             searchTerm: ''
         };
 
-        // تهيئة المتجر
+        // Init Shop
         document.addEventListener('DOMContentLoaded', function () {
             initShop();
         });
 
-        // تصفية المنتجات
+        // Filter Products
         function filterProducts() {
             currentFilters.category = document.getElementById('category-filter').value;
             currentPage = 1;
@@ -480,7 +482,7 @@
             loadShopProducts();
         }
 
-        // تصفية حسب السعر
+        // Filter by Price
         function filterByPrice() {
             currentFilters.priceRange = document.getElementById('price-range').value;
             currentPage = 1;
@@ -488,7 +490,7 @@
             loadShopProducts();
         }
 
-        // ترتيب المنتجات
+        // Sort Products
         function sortProducts() {
             currentFilters.sortBy = document.getElementById('sort-by').value;
             currentPage = 1;
@@ -496,7 +498,7 @@
             loadShopProducts();
         }
 
-        // تغيير طريقة العرض
+        // Change View
         function changeView(view) {
             currentView = view;
             const container = document.getElementById('products-container');
@@ -511,7 +513,7 @@
             loadShopProducts();
         }
 
-        // إعادة تعيين الفلاتر
+        // Reset Filters
         function resetFilters() {
             document.getElementById('category-filter').value = 'all';
             document.getElementById('price-range').value = 'all';
@@ -530,7 +532,7 @@
             loadShopProducts();
         }
 
-        // البحث في المتجر
+        // Search Products
         function searchProducts() {
             const searchInput = document.getElementById('search-input');
             currentFilters.searchTerm = searchInput.value;
@@ -539,7 +541,7 @@
             loadShopProducts();
         }
 
-        // تطبيق فلاتر من الرابط
+        // Apply URL Filters
         function applyURLFilters() {
             const urlParams = new URLSearchParams(window.location.search);
 
@@ -556,7 +558,7 @@
             }
         }
 
-        // تحديث الرابط
+        // Update URL
         function updateURL() {
             const params = new URLSearchParams();
 
